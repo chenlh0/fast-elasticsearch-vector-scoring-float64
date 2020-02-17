@@ -1,7 +1,7 @@
 package com.liorkn.elasticsearch;
 
 import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
+import java.nio.DoubleBuffer;
 import java.util.Base64;
 
 /**
@@ -9,20 +9,20 @@ import java.util.Base64;
  */
 public class Util {
 
-    public static float[] convertBase64ToArray(String base64Str) {
+    public static double[] convertBase64ToArray(String base64Str) {
         final byte[] decode = Base64.getDecoder().decode(base64Str.getBytes());
-        final FloatBuffer floatBuffer = ByteBuffer.wrap(decode).asFloatBuffer();
-        final float[] dims = new float[floatBuffer.capacity()];
-        floatBuffer.get(dims);
+        final DoubleBuffer doubleBuffer = ByteBuffer.wrap(decode).asDoubleBuffer();
+        final double[] dims = new double[doubleBuffer.capacity()];
+        doubleBuffer.get(dims);
 
         return dims;
     }
 
-    public static String convertArrayToBase64(float[] array) {
-        final int capacity = Float.BYTES * array.length;
+    public static String convertArrayToBase64(double[] array) {
+        final int capacity = 8 * array.length;
         final ByteBuffer bb = ByteBuffer.allocate(capacity);
-        for (double v : array) {
-            bb.putFloat((float) v);
+        for (int i = 0; i < array.length; i++) {
+            bb.putDouble(array[i]);
         }
         bb.rewind();
         final ByteBuffer encodedBB = Base64.getEncoder().encode(bb);
