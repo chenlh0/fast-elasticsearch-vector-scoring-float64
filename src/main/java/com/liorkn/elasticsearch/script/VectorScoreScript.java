@@ -58,7 +58,7 @@ public final class VectorScoreScript extends ScoreScript {
                     score += v * inputVector[i];  // dot product
                 }
 
-                return Math.exp(score); // Convert dot-proudct range from (-INF to +INF) to (0 to +INF)
+                return 1.0 - score / inputVector.length; // Convert dot-proudct range from (-INF to +INF) to (0 to +INF)
             }
     	} catch (IOException e) {
     		throw new UncheckedIOException(e); // again - Failing in order not to hide potential bugs
@@ -81,7 +81,7 @@ public final class VectorScoreScript extends ScoreScript {
 		final Object cosineBool = params.get("cosine");
         this.cosine = cosineBool != null ?
                 (boolean)cosineBool :
-                true;
+                false;
 
         final Object field = params.get("field");
         if (field == null)
